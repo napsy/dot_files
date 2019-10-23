@@ -1,0 +1,104 @@
+# A basic .muttrc for use with Gmail
+set sendmail="/usr/sbin/ssmtp"
+# Change the following six lines to match your Gmail account details
+set imap_user = "john@example.com"
+set imap_pass = "johnspassword"
+set smtp_url = "smtp://john@example.com@smtp.googlemail.com:587/"
+set smtp_pass = "johnspassword"
+set from = "john@example.com"
+set realname = "John Smith"
+
+# Change the following line to a different editor you prefer.
+set editor="vim -c 'set spell spelllang=en'"
+
+# Basic config, you can leave this as is
+set folder = "imaps://imap.googlemail.com:993"
+set spoolfile = "+INBOX"
+set imap_check_subscribed
+set hostname = googlemail.com
+set mail_check = 120
+set timeout = 30
+set imap_keepalive = 300
+set postponed = "+[GMail]/Drafts"
+set record = "+[GMail]/Sent Mail"
+set header_cache=~/.mutt/cache/headers
+set message_cachedir=~/.mutt/cache/bodies
+set certificate_file=~/.mutt/certificates
+set move = no
+set include
+set sort = 'threads'
+set sort_aux = 'reverse-last-date-received'
+set auto_tag = yes
+ignore "Authentication-Results:"
+ignore "DomainKey-Signature:"
+ignore "DKIM-Signature:"
+hdr_order Date From To Cc
+alternative_order text/plain text/html *
+auto_view text/html
+bind editor <Tab> complete-query
+bind editor ^T complete
+bind editor <space> noop
+
+# Gmail-style keyboard shortcuts
+macro index,pager y "<enter-command>unset trash\n <purge-message><sync-mailbox>y" "Gmail archive message"
+macro index,pager d$ "<enter-command>set trash=\"imaps://imap.googlemail.com/[GMail]/Bin\"\n\
+<purge-message>" "Gmail delete message"
+macro index,pager gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index,pager ga "<change-folder>=[Gmail]/All Mail<enter>" "Go to all mail"
+macro index,pager gs "<change-folder>=[Gmail]/Starred<enter>" "Go to starred messages"
+macro index,pager gd "<change-folder>=[Gmail]/Drafts<enter>" "Go to drafts"
+
+set pager_index_lines = 10
+
+set signature="~/.mutt/sig"
+ # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
+set net_inc=5
+set header_cache=~/.hcache
+# use G to refresh mailbox
+set imap_idle
+set imap_check_subscribed
+unset imap_passive
+unset imap_peek
+set followup_to=yes
+bind index g "group-reply"
+bind pager g "group-reply"
+bind attach g "group-reply"
+macro index,pager y "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive"
+
+#Enable for notifications
+#set new_mail_command="notify-send --icon='/home/napsy/1.png' 'New Email in %f' '%n new messages, %u unread.' &"
+
+macro index d '<delete-message><sync-mailbox>y'
+macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+source ~/.mutt/molokai.mutt
+
+# labels
+macro index y "<enter-command>set editor=\"~/bin/editlabel append\"\n\
+<edit><sync-mailbox><next-undeleted>\
+<enter-command>set editor=vim\n" "Append label"
+macro pager y "<enter-command>set editor=\"~/bin/editlabel append\"\n\
+<edit><sync-mailbox><next-undeleted>\
+<enter-command>set editor=vim\n" "Append label"
+macro index Y "<enter-command>set editor=\"~/bin/editlabel menu\"\n\
+<edit><sync-mailbox><next-undeleted>\
+<enter-command>set editor=vim\n" "Edit labels"
+macro pager Y "<enter-command>set editor=\"~/bin/editlabel menu\"\n\
+<edit><sync-mailbox><next-undeleted>\
+<enter-command>set editor=vim\n" "Edit labels"
+macro index \Cy "<limit>~y " "Limit view to label"
+
+set index_format="%4C %Z %{%b %d} %-15.15L %?M?(#%03M)&(%4l)? %?y?(%.20Y) ?%s"
+
+#set sidebar_visible
+set sidebar_width
+# set sedebar_delim
+
+# Sidebar keys
+
+bind index \CP sidebar-prev
+bind index \CN sidebar-next
+bind index \CO sidebar-open
+bind pager \CP sidebar-prev
+bind pager \CN sidebar-next
+bind pager \CO sidebar-open
