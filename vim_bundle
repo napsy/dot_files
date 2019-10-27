@@ -1,0 +1,13 @@
+
+ack.vim
+ctrlp.vim
+goyo.vim
+nerdtree
+syntastic
+vim-airline
+vim-fugitive
+vim-gitgutter
+vim-go
+vim-javascript
+vim-multiple-cursors
+YouCompleteMe
